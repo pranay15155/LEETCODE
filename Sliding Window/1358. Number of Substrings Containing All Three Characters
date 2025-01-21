@@ -1,0 +1,84 @@
+https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/description/
+
+
+
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int ans=0;
+        int l=0,r=0;
+        int n=s.size();
+        map<char,int>mp;
+        while(r<n){
+           mp[s[r]]++;
+           while(mp.size()>=3 && l<=r){
+            mp[s[l]]--;
+            if(mp[s[l]]==0)mp.erase(s[l]);
+            ans+=n-r;
+            l++;
+           }
+           r++;
+        }
+        return ans;
+    }
+};
+
+// abcaabc
+
+
+// substrings starting at index 0
+// abc
+// abca
+// abcaa
+// abcaab
+// abcaabc
+
+
+//substrings starting at index 1
+// bca
+// bcaa
+// bcaab
+// bcaabc
+
+
+//substrings starting at index 2
+// caab
+// caabc
+
+
+//substrings starting at index 3
+//aabc
+
+
+//substrings starting at index 4
+//abc
+
+//substrings starting at index 5 and 6--> not possible
+
+
+
+
+//METHOD-2
+
+very interesting approach can watch striver video to understand how it is working 
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int a=-1,b=-1,c=-1;
+        int l=0,r=0;
+        int n=s.size();
+        int ans=0;
+        while(r<n){
+            if(s[r]=='a')a=r;
+            if(s[r]=='b')b=r;
+            if(s[r]=='c')c=r;
+           
+            if(a>-1 && b>-1 && c>-1){
+                ans+=min({a,b,c})+1;
+            }
+            r++;
+        }
+        return ans;
+    }
+};
+//bbacba

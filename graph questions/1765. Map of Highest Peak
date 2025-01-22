@@ -1,0 +1,45 @@
+https://leetcode.com/problems/map-of-highest-peak/description/?envType=daily-question&envId=2025-01-22
+
+
+class Solution {
+public:
+   int n,m;
+   int check(int row,int col){
+    if(row>=n || row<0 || col>=m || col<0)return 0;
+    return 1;
+   }
+    vector<vector<int>> highestPeak(vector<vector<int>>& grid) {
+         n=grid.size(),m=grid[0].size();
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        queue<pair<int,int>>q;//{row,col}
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1){
+                    q.push({i,j});
+                    dp[i][j]=0;
+                }
+            }
+        }
+        int dr[4]={-1,0,1,0};
+        int dc[4]={0,1,0,-1};
+        int level=1;
+        while(q.size()){
+            int size=q.size();
+            for(int i=0;i<size;i++){
+               auto [row,col]=q.front();
+               q.pop();
+               for(int j=0;j<4;j++){
+                int nr=row+dr[j];
+                int nc=col+dc[j];
+                if(check(nr,nc)==1 && dp[nr][nc]==-1 && grid[nr][nc]!=1){
+                    dp[nr][nc]=level;
+                    q.push({nr,nc});
+                }
+               }
+            }
+            level++;
+        }
+        return dp;
+
+    }
+};

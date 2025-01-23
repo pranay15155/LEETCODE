@@ -1,0 +1,68 @@
+https://leetcode.com/problems/count-servers-that-communicate/?envType=daily-question&envId=2025-01-23
+
+//DSU IMPLEMENTATION EASY
+
+
+
+class Solution {
+public:
+    int find_parent(int node,vector<int>&parent){
+        if(node==parent[node])return node;
+        return parent[node]=find_parent(parent[node],parent);
+    }
+    void union_by_size(int u,int v,vector<int>&parent,vector<int>&size){
+        int pu=find_parent(u,parent);
+        int pv=find_parent(v,parent);
+        if(pu!=pv){
+            if(size[pu]>=size[pv]){
+                parent[pv]=pu;
+                size[pu]+=size[pv];
+            }
+            else{
+                parent[pu]=pv;
+                size[pv]+=size[pu];
+            }
+        }
+    }
+    int countServers(vector<vector<int>>& grid) {
+        int n=grid.size(),m=grid[0].size();
+        vector<int>parent(n*m,0),size(n*m,1);
+        for(int i=0;i<n*m;i++){
+            parent[i]=i;
+        }
+        for(int row=0;row<n;row++){
+            vector<int>temp;
+            for(int col=0;col<m;col++){
+              if(grid[row][col]==1){
+                temp.push_back(row*m+col);
+              }
+            }
+            for(int i=0;temp.size() && i<temp.size()-1;i++){
+                union_by_size(temp[i],temp[i+1],parent,size);
+            }
+        }
+
+        for(int col=0;col<m;col++){
+            vector<int>temp;
+            for(int row=0;row<n;row++){
+              if(grid[row][col]==1){
+                temp.push_back(row*m+col);
+              }
+            }
+            for(int i=0; temp.size() && i< temp.size()-1;i++){
+                union_by_size(temp[i],temp[i+1],parent,size);
+            }
+        }
+        // d(parent);
+        // d(size);
+        int count=0;
+        for(int i=0;i<n*m;i++){
+            if(parent[i]!=i || size[i]>1)count++;
+        }
+        return count;
+    }
+};
+
+//temp may be of size 0 hence a check temp.size() is required to access temp.size()-2 
+
+

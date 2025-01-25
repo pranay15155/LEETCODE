@@ -1,0 +1,80 @@
+https://leetcode.com/problems/make-lexicographically-smallest-array-by-swapping-elements/description/?envType=daily-question&envId=2025-01-25
+
+
+//very nice DSU Problem try to understand it using comments below
+
+//connected components(indexes are connected) using limit value 
+//index - nums[index]
+// 0-5-4  1-1-2
+// 2-1    6-7
+// 3      18
+
+// 0 1 2 3 4 5  ->index
+// 1 6 7 18 1 2 ->final array 
+
+class Solution {
+public:
+    int find_parent(int node,vector<int>&parent){
+        if(node==parent[node])return node;
+        return parent[node]=find_parent(parent[node],parent);
+    }
+    void union_by_size(int u,int v,vector<int>&parent,vector<int>&size){
+        int pu=find_parent(u,parent);
+        int pv=find_parent(v,parent);
+        if(pu!=pv){
+            if(size[pu]>=size[pv]){
+                parent[pv]=pu;
+                size[pu]+=size[pv];
+            }
+            else{
+                parent[pu]=pv;
+                size[pv]+=size[pu];
+            }
+        }
+    }
+    void dfs(int node,vector<int>&vis,vector<int>&ans,vector<int>&index,vector<vector<int>>&graph,vector<int>&nums){
+        vis[node]=1;
+        ans.push_back(nums[node]);
+        index.push_back(node);
+        for(auto &x:graph[node]){
+            if(vis[x]==0){
+               dfs(x,vis,ans,index,graph,nums);
+            }
+        }
+    }
+    vector<int> lexicographicallySmallestArray(vector<int>& nums, int limit) {
+        int n=nums.size();
+        vector<pair<int,int>>vp;
+        vector<int>parent(n,0),size(n,1),vis(n,0);
+        vector<vector<int>>graph(n);
+        for(int i=0;i<n;i++){
+            vp.push_back({nums[i],i});
+            parent[i]=i;
+        }
+        sort(vp.begin(),vp.end());
+        for(int i=0;i<vp.size()-1;i++){
+            auto [p,q]=vp[i];
+            auto [r,s]=vp[i+1];
+            if(r-p<=limit){
+                union_by_size(q,s,parent,size);
+                graph[q].push_back(s);
+                graph[s].push_back(q);
+            }
+        }
+        vector<int>ans(n,0);
+        for(int i=0;i<n;i++){
+            vector<int>index;
+            vector<int>temp;
+            if(vis[i]==0){
+              dfs(i,vis,temp,index,graph,nums);
+            }
+            sort(index.begin(),index.end());
+            sort(temp.begin(),temp.end());
+            for(int j=0;j<index.size();j++){
+                ans[index[j]]=temp[j];
+            }
+        }
+        
+        return ans;
+    }
+};

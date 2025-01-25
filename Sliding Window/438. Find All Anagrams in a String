@@ -1,0 +1,43 @@
+https://leetcode.com/problems/find-all-anagrams-in-a-string/description/
+
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        int l=0,r=0;
+        unordered_map<char,int>mp;
+        vector<int>ans;
+        for(int i=0;i<p.size();i++){
+            mp[p[i]]++;
+        }
+        int count=mp.size();
+        while(r<s.size()){
+            if(mp.find(s[r])!=mp.end()){
+                mp[s[r]]--;
+                if(mp[s[r]]==0)count--;
+            }
+            if(r-l+1==p.size()){
+                if(count==0)ans.push_back(l);
+                if(mp.find(s[l])!=mp.end()){
+                    mp[s[l]]++;
+                    if(mp[s[l]]==1)count++;
+                }
+                l++;
+            }
+            r++;
+        }
+        return ans;
+    }
+};
+
+// watch this video to get the intution 
+//exact same intutuion exact same 
+//https://www.youtube.com/watch?v=WJaij9ffOIY&list=PLgUwDviBIf0q7vrFA_HEWcqRqMpCXzYAL&index=12
+
+//just what is different is that
+// we store those char which are present in p in a map mp
+//and we store how many different character are there in map  in a variable count 
+//and then while implementing sliding window 
+//we check if all occurences of a character is present in our window then we decrease the value of count
+//and if window size=>(r-l+1) is exact equal to p.size()
+//and when count is equal to 0 that means every occurences of every different character in our map is presnt in our window 
+//and nothing extra is there then we take starting index l in our ans vector 

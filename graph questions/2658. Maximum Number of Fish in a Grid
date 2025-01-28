@@ -1,5 +1,7 @@
 https://leetcode.com/problems/maximum-number-of-fish-in-a-grid/?envType=daily-question&envId=2025-01-28
 
+
+//simple bfs or dfs question nothing new to learn from
 class Solution {
 public:
 int n,m;

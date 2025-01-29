@@ -1,7 +1,7 @@
 https://leetcode.com/problems/redundant-connection/description/?envType=daily-question&envId=2025-01-29
 
 
-
+//DSU nice problem 
 class Solution {
 public:
     int find_parent(int node,vector<int>&parent){

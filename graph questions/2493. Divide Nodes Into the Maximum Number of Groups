@@ -1,0 +1,74 @@
+https://leetcode.com/problems/divide-nodes-into-the-maximum-number-of-groups/description/
+
+
+
+//
+class Solution {
+public:
+    
+    int bipartite(int node,vector<int>&vis,vector<int>&color,vector<vector<int>>&graph){
+        vis[node]=1;
+        for(auto &x:graph[node]){
+            if(vis[x]==1 && color[x]==color[node])return 0;
+            if(vis[x]==0){
+              if(color[node]==0)color[x]=1;
+              else color[x]=0;
+              if(bipartite(x,vis,color,graph)==0)return 0;
+            }
+        }
+        return 1;
+    }
+    int bfs(int node,int n,vector<vector<int>>& graph){
+        queue<int>q;
+        vector<int>vis(n,0);
+        q.push(node);
+        vis[node]=1;
+        int level=0;
+        while(q.size()){
+           int size=q.size();
+           for(int i=0;i<size;i++){
+            int element=q.front();
+            q.pop();
+            for(auto &x:graph[element]){
+                if(vis[x]==0){
+                    vis[x]=1;
+                    q.push(x);
+                }
+            }
+           }
+           level++;
+        }
+        return level;
+    }
+    void dfs(int node,int &ans,vector<int>&vis,vector<int>&level,vector<vector<int>>&graph){
+      vis[node]=1;
+      ans=max(ans,level[node]);
+      for(auto &x:graph[node]){
+        if(vis[x]==0)dfs(x,ans,vis,level,graph);
+      }
+    }
+    int magnificentSets(int n, vector<vector<int>>& edges) {
+        vector<vector<int>>graph(n);
+        for(int i=0;i<edges.size();i++){
+            graph[edges[i][0]-1].push_back(edges[i][1]-1);
+            graph[edges[i][1]-1].push_back(edges[i][0]-1);
+        }
+        vector<int>color(n,0),vis(n,0);
+        for(int i=0;i<n;i++){
+            if(bipartite(i,vis,color,graph)==0)return -1;
+        }
+        vector<int>level(n,0);
+        for(int i=0;i<n;i++){
+            level[i]=bfs(i,n,graph);
+        }
+        int ans=0;
+        vector<int>vis2(n,0);
+        for(int i=0;i<n;i++){
+          int temp=0;
+          if(vis2[i]==0)dfs(i,temp,vis2,level,graph);
+          ans+=temp;
+        }
+        return ans;
+        
+    }
+};

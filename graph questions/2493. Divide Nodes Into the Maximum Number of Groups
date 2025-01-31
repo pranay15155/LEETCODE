@@ -2,7 +2,16 @@ https://leetcode.com/problems/divide-nodes-into-the-maximum-number-of-groups/des
 
 
 
-//
+//very hard and nice graph problem having concept of bfs level count,dfs traversal,and bipartite concept
+
+//in this problem first check if graph is bipartite if it is not then it is not possible simple return -1
+//then apply bfs from every node and count the maximum level we can go from that component 
+
+//we use dfs at last to find highest level achievable from every node in 1 single component
+//because different component will have different number of groups 
+//suppose 1st component has 3 groups max achievable and 2nd component has 4 achievable than total will be 7 
+
+
 class Solution {
 public:
     

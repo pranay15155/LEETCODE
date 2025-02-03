@@ -1,0 +1,24 @@
+https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/
+
+
+
+class Solution {
+public:
+    bool check(vector<int>& nums) {
+        int peak=0;
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            if(nums[i]>nums[(i+1)%n])peak++;
+        }
+        if(peak>1)return false;
+        return true;
+    }
+};
+// Input: nums = [2,1,3,4]
+// Output: false
+
+//if peak is more than 1 return false else true
+// 2 1 peak
+// 1 3
+// 3 4
+// 4 2 peak

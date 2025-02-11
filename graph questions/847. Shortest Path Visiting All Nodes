@@ -1,0 +1,41 @@
+https://leetcode.com/problems/shortest-path-visiting-all-nodes/description/
+
+//watch this video to understand the concept behind this problem
+https://www.youtube.com/watch?v=m73DRkEo8Ko&t=456s
+
+
+
+class Solution {
+public:
+    int shortestPathLength(vector<vector<int>>& graph) {
+        int n = graph.size();
+        queue<pair<int, int>> q;
+        map<pair<int, int>, int> mp;
+        for (int i = 0; i < n; i++) {
+            int a = 1 << i;
+            q.push({i, a});
+            mp[{i, a}]++;
+        }
+        int final_mask = pow(2, n) - 1;
+        int ans = 0;
+        while (q.size()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                auto [node, mask] = q.front();
+                q.pop();
+                if (mask == final_mask)return ans;
+                
+                for(auto &x:graph[node]){
+                    int shift=1<<x;
+                    int new_mask=mask|shift;
+                    if(mp.find({x,new_mask})==mp.end()){
+                        q.push({x,new_mask});
+                        mp[{x,new_mask}]++;
+                    }
+                }
+            }
+            ans++;
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,87 @@
+https://leetcode.com/problems/most-profitable-path-in-a-tree/description/?envType=daily-question&envId=2025-02-24
+
+//approach 
+//what i am doing is first i saved the path from bob to 0 using dfs
+//then i assign levels to the path of bob using unordered_map
+//then i use bfs and pair of queue to store {node,cost}
+//if alice opens a door before bob reaches there then alice gets full rewards or penalty
+//but if alice and bob opens at the same time and reward or penalty is distributed in half
+//but if bob opens the door before alice then bob takes all the reward or penalty
+//to know if alice or bob reaches which door when we use level in queue and unordered_map bob_cost 
+//bob will only move in direction of 0 and will have only 1 path because it is a tree and their are no cycles
+//once alice reaches leaf node take the maximum answer 
+
+
+
+class Solution {
+public:
+    void dfs(int node,int bob,vector<vector<int>>& graph,vector<int>&path,vector<int>&temp,vector<int>&vis){
+        temp.push_back(node);
+        vis[node]=1;
+        if(node==bob){
+          path=temp;
+          return;
+        }
+        for(auto &x:graph[node]){
+          if(vis[x]==0){
+            dfs(x,bob,graph,path,temp,vis);
+          }
+        }
+        temp.pop_back();
+    }
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        if(amount.size()==1)return amount[0]/2;
+        unordered_map<int,int>bob_cost;
+        vector<int>path,temp,vis(edges.size()+1,0);
+        vector<vector<int>>graph(edges.size()+1);
+        for(int i=0;i<edges.size();i++){
+            int u=edges[i][0];
+            int v=edges[i][1];
+            graph[u].push_back(v);
+            graph[v].push_back(u);
+        }
+        dfs(0,bob,graph,path,temp,vis);
+        reverse(path.begin(),path.end());
+        for(int i=0;i<path.size();i++){
+           bob_cost[path[i]]=i;
+        }
+        // d(path);
+        fill(vis.begin(), vis.end(), 0);
+        queue<pair<int,int>>q;
+        q.push({0,amount[0]});
+        vis[0]=1;
+        int level=1;
+        int ans=-1e8;
+        while(q.size()){
+         int size=q.size();
+         for(int i=0;i<size;i++){
+            auto [node,cost]=q.front();
+            // d3(node,cost,level);
+            q.pop();
+            if(vis[node]==1 && graph[node].size()==1 && node!=0){ //checking if this is a leaf node to save our result 
+                    // d3(node,cost,node);
+                   ans=max(ans,cost);
+                }
+            for(auto &x:graph[node]){
+                if(vis[x]==0){
+                    if(bob_cost.find(x)!=bob_cost.end()){
+                       if(bob_cost[x]<level){ //  bob reaches first
+                          q.push({x,cost});
+                       }
+                       else if(bob_cost[x]==level){  //bob and alice reaches both at the same time
+                        q.push({x,cost+(amount[x]/2)});
+                       }
+                       else q.push({x,cost+amount[x]});  //alice reaches first
+                    }
+                    else q.push({x,cost+amount[x]});  //in this path bob is not present 
+                    vis[x]=1;
+                }
+            }
+         }
+            level++;
+
+        }
+        return ans;
+
+    }
+};

@@ -1,6 +1,10 @@
 https://leetcode.com/problems/word-search/description/
 
 
+//this is a simple backtracking problem which when started from a cell
+//tries to match neighbouring cells to finally create our target word 
+//and if it cannot match it then it backtracks it and start again from any another cell
+
 
 class Solution
 {

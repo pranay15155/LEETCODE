@@ -1,0 +1,40 @@
+https://leetcode.com/problems/non-decreasing-subsequences/description/
+
+
+//things to remember when doing this question 
+
+//push element only when previous element is smaller or equal to next
+//only pop element when yu have pushed element at that iteration 
+//after pushing element in temp vector 
+//insert temp vector into set so that if temp if unique it will be added to ans 
+//now call recursion to go for next index 
+//after recursion completes now pop element 
+//and call recusion again to go at next index without taking element at current index
+
+
+
+
+class Solution {
+public:
+    void f(int ind, vector<int>& nums, vector<int>& temp,set<vector<int>>& ans) {
+        if (ind >= nums.size())return;
+
+       if(temp.size()==0 || nums[ind]>=temp.back()){
+        temp.push_back(nums[ind]);
+         if (temp.size() >= 2) ans.insert(temp);
+         f(ind + 1, nums, temp, ans);
+         temp.pop_back(); 
+       }
+       f(ind + 1, nums, temp, ans);
+    }
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        set<vector<int>> ans;
+        vector<int> temp;
+        f(0, nums, temp, ans);
+        vector<vector<int>> result;
+        for (auto& x : ans) {
+            result.push_back(x);
+        }
+        return result;
+    }
+};

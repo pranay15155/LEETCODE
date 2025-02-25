@@ -1,0 +1,64 @@
+https://leetcode.com/problems/unique-paths-iii/description/
+
+//STANDARD MISTAKE
+//in this question we have to calculate all the possible paths using backtracking 
+//but there is a standard mistake i have done and may do in future 
+//that is while returning from base case not making visited cell ,non-visited
+//due to which it will always find only one path and hence giving wrong answer so make sure to always reset 
+//visited vector to 0 in base case and count to count-1
+
+
+
+
+class Solution {
+public:
+int n,m;
+    int check(int row,int col){
+        if(row>=n || col>=m || row<0 || col<0)return 0;
+        return 1;
+    }
+    int f(int row,int col,int erow,int ecol,int &count,int &target,vector<vector<int>>& grid,vector<vector<int>>& vis){
+        vis[row][col]=1;
+        count++;
+        if(row==erow && col==ecol && count==target){
+            vis[row][col]=0; //standard mistake 
+            count--;         //if left these 2 lines will give wrong answer 
+            return 1;
+        }
+        int dr[4]={-1,0,1,0};
+        int dc[4]={0,1,0,-1};
+        int ans=0;
+        for(int i=0;i<4;i++){
+            int nrow=row+dr[i];
+            int ncol=col+dc[i];
+            if(check(nrow,ncol) && vis[nrow][ncol]==0 && grid[nrow][ncol]!=-1){
+                int t=f(nrow,ncol,erow,ecol,count,target,grid,vis);
+                ans+=t;
+            }
+        }
+        vis[row][col]=0;
+        count--;
+        return ans;
+    }
+    int uniquePathsIII(vector<vector<int>>& grid) {
+        int count=0;
+        n=grid.size(),m=grid[0].size();
+        int srow=0,scol=0,erow=0,ecol=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]!=-1)count++;
+                if(grid[i][j]==1){
+                    srow=i;
+                    scol=j;
+                }
+                if(grid[i][j]==2){
+                    erow=i;
+                    ecol=j;
+                }
+            }
+        }
+        int c=0;
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        return f(srow,scol,erow,ecol,c,count,grid,vis);
+    }
+};

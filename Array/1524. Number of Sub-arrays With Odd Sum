@@ -84,3 +84,7 @@ public:
 //look for prefix sum that is even on left side of that index
 //because after removing those even sums we will get odd prefix sum remaning
 //odd-even=odd
+
+//and when we get even prefix sum look for odd prefix sum on left 
+//because after removing odd sum from even sum rest sum will be odd
+//even-odd=odd

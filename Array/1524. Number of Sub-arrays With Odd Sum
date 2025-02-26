@@ -1,7 +1,7 @@
 https://leetcode.com/problems/number-of-sub-arrays-with-odd-sum/description/
 
 
-
+//very nice cp trick like question must revise it every now and then 
 
 class Solution {
 public:

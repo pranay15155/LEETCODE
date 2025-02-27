@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long li;
+typedef vector<li> vec;
+
+// **First Kadane Implementation (Doesn't Handle All-Negative Arrays Correctly)**
+li kadane1(vec &v) {
+    int mx = 0, s = 0;
+    for (int i = 0; i < v.size(); i++) {
+        s += v[i];
+        if (s < 0)  // Reset sum to 0 if negative
+            s = 0;
+        mx = max(mx, s);
+    }
+    return mx;  // Returns 0 if all elements are negative (not ideal)
+}
+
+// **Second Kadane Implementation (Standard Implementation)**
+li kadane2(vec &v) {
+    li n = v.size();
+    li curr_sum = 0, max_sum = -1e8; // Handles negative values properly
+    for (int i = 0; i < n; ++i) {
+        curr_sum = max(v[i], curr_sum + v[i]); // Compare adding to previous sum vs. starting fresh
+        max_sum = max(max_sum, curr_sum); // Track maximum sum
+    }
+    return max_sum;  // Returns the maximum subarray sum even for all-negative cases
+}
+
+int main() {
+    vec v = {-2, -3, 4, -1, -2, 1, 5, -3};
+    
+    cout << "First Kadane Output: " << kadane1(v) << endl;
+    cout << "Second Kadane Output: " << kadane2(v) << endl;
+
+    return 0;
+}
+
+/*
+**Differences Between the Two Implementations:**
+-------------------------------------------------
+1. **kadane1** resets `s` to `0` when it becomes negative, meaning it ignores negative subarrays. 
+   - This leads to incorrect results when all elements are negative.
+   - Example: `{-3, -2, -1}` returns `0`, which is incorrect.
+   
+2. **kadane2** correctly considers negative values and ensures the largest possible subarray sum.
+   - Example: `{-3, -2, -1}` returns `-1`, which is correct.
+
+**When to Use Which?**
+- Use **kadane1** if you only care about the maximum non-negative sum.
+- Use **kadane2** (standard Kadane’s Algorithm) for general cases, including negative numbers.
+
+*/

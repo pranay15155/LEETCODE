@@ -25,3 +25,10 @@ public:
         return max(abs(max_sum),abs(min_sum));
     }
 };
+
+
+
+//SIMILAR QUESTIONS 
+
+53. Maximum Subarray
+https://leetcode.com/problems/maximum-subarray/

@@ -1,0 +1,15 @@
+https://www.geeksforgeeks.org/problems/count-total-set-bits-1587115620/1
+
+class Solution{
+    public:
+    int countSetBits(int n)
+    {
+    if(n==0)return 0;
+    int a=log2(n);//here a is maximum power of 2 less than or equal to n
+    //for example if n=13 then a=3  =>pow(2,3)=8
+    int temp1=a*(1<<(a-1));
+    int temp2=n-(1<<a)+1;
+    int temp3=countSetBits(n-(1<<a));
+    return temp1+temp2+temp3;
+    }
+};

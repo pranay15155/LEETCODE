@@ -1,0 +1,20 @@
+https://leetcode.com/problems/single-number-ii/description/
+
+
+//METHOD-1
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int ans=INT_MAX;
+        for(int i=1;i<nums.size();i+=3){
+            if(nums[i-1]!=nums[i+1]){
+                ans=nums[i-1];
+                break;
+            }
+        }
+        if(ans==INT_MAX)return nums[nums.size()-1];
+        return ans;
+    }
+};
+

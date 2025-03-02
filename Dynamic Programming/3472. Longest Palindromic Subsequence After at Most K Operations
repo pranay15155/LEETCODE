@@ -1,0 +1,37 @@
+https://leetcode.com/problems/longest-palindromic-subsequence-after-at-most-k-operations/description/
+
+//Very Nice 3D DP Problem
+
+
+class Solution {
+public:
+    int dp[205][205][205];
+
+    int f(int ind1, int ind2, int k, string& s) {
+        // d3(ind1,ind2,k);
+        if (ind1 == ind2)
+            return 1;
+        if (ind1 > ind2)
+            return 0;
+        if (dp[ind1][ind2][k] != -1)
+            return dp[ind1][ind2][k];
+        int ans = 0;
+        ans = f(ind1 + 1, ind2, k, s);
+        ans = max(ans, f(ind1, ind2 - 1, k, s));
+        int diff = abs(s[ind1] - s[ind2]);
+        diff = min(diff, 26 - diff);
+        // d5(ind1,ind2,k,diff,diff2);
+        if (k >= diff) {
+            ans = max(ans, f(ind1 + 1, ind2 - 1, k - diff, s) + 2);
+        }
+        // d4(ind1,ind2,k,ans);
+        // spc();
+        return dp[ind1][ind2][k] = ans;
+    }
+    int longestPalindromicSubsequence(string s, int k) {
+        memset(dp, -1, sizeof(dp));
+        int n = s.size();
+        return f(0, n - 1, k, s);
+    }
+};
+

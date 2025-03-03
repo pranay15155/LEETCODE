@@ -1,6 +1,6 @@
 https://leetcode.com/problems/count-primes/description/
 
-
+//Sieve of Eratosthenes
 
 class Solution {
 public:

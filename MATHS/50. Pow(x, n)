@@ -1,0 +1,21 @@
+https://leetcode.com/problems/powx-n/description/
+
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        long long power = abs((long long)n);
+        double result = 1.0;
+        while (power > 0) {
+            if (power & 1) {
+                result *= x;
+                power--;
+            } 
+            else {
+                x *= x;
+                power >>= 1;
+            }
+        }
+        return (n < 0) ? 1.0 / result : result;
+    }
+};

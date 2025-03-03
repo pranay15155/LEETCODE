@@ -1,0 +1,45 @@
+https://leetcode.com/problems/single-number-iii/description/
+
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        long long ans=0;
+        for(auto &x:nums)ans^=x;
+        ans=(ans&(ans-1))^ans;//what is the use of this ??
+        int one=0,two=0;
+        for(auto &x:nums){
+            if(ans&x)one^=x;
+            else two^=x;
+        }
+        return {one,two};
+    }
+};
+//EXPLANATION
+
+//nums=2,4,2,14,3,7,7,3
+
+//after this for(auto &x:nums)ans^=x;
+//ans=14^4
+//14-1110
+// 4-0100
+
+// 14^4=1010->ans
+
+//by doing ans&(ans-1)
+
+//  1010
+//& 1001
+//  1000 -->by doing ans&(ans-1) we are unsetting the right most bit that was set
+
+//now we do 1000 ^original ans
+//1000 ^1010
+
+//0010 -->this finally gives us the rightmost bit which was different in 14 and 4
+//Most important step is this only 
+//now ans stores the rightmost bit which is different in both numbers we have to find 
+
+//now we make two buckets one and two
+//if this second bit is set in nums[i] we will take nums[i]^one
+//else nums[i]^two in this way since we separate both numbers which are occuring only once 
+//those numbers which are coming two times which ultimately becomes zero in bucket one and two
+//because we are taking xor

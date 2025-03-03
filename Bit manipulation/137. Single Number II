@@ -49,3 +49,72 @@ public:
 
 //COUNT NO OF BITS SET AND DO IT MODULO 3 FROM 0 TILL 31
 
+
+
+
+//METHOD -3
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ones=0,two=0;
+        for(int i=0;i<nums.size();i++){
+            ones=(nums[i]^ones)&(~two);
+            two=(nums[i]^two)&(~ones);
+            // cout<<ones<<" "<<two<<endl;
+
+        }
+        return ones;
+    }
+};
+
+//bucket method
+
+//2 2 3 2
+
+// 0th iteration 
+// ones=(2^0)&(~(0))
+// ones=((10)^(00)) & (11) -->writing above line in binary
+//ones=10 ---> 2 is written in binary form 
+
+//two=(2^0)&(~(2))
+//two=(10)&(01)
+//two=0
+
+//from now on i will be writing everything in binary
+
+
+//1st iteration
+//ones=((10)^(10))&(~(00))
+//ones=(00)&(11)
+//ones=0
+
+//two=(10^0)&(~(00))
+//two=(10)&(11)
+//two=10->i.e 2
+
+//2nd iteration
+//ones=(11^0)&(~(10))
+//ones=(11)&(01)
+//ones=01
+
+//two=(11^10)&(~(01))
+//two=(01)&(10)
+//two=00
+
+//3rd iteration
+//ones=(10^01)&(~(00))
+///ones=(11)&(11)
+//ones=11-->3
+
+//two=(10^00)&(~(11))
+//two=(10)&(00)
+//two=00 -->0
+
+//ans will be stored in ones hence returned ones
+
+
+
+
+
+
+

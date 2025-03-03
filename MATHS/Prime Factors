@@ -12,7 +12,7 @@ class Solution{
 	            }
 	        }
 	    }
-	    if(N!=1)ans.push_back(N);
+	    if(N!=1)ans.push_back(N);//why this line take N=16 and after dry run yu will know why
 	    return ans;
 	}
 };

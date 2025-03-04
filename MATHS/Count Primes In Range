@@ -1,0 +1,23 @@
+https://www.geeksforgeeks.org/problems/count-primes-in-range1604/0
+
+class Solution {
+  public:
+    int countPrimes(int L, int R) {
+        int n=2e5+1;
+        vector<int>prime(n,1);
+        prime[0]=0;
+        prime[1]=0;
+        for(int i=2;i*i<=n;i++){
+            if(prime[i]==1){
+                for(int j=i*i;j<n;j+=i){
+                    prime[j]=0;
+                }
+            }
+        }
+        vector<int>prefix(n,0);
+        for(int i=1;i<n;i++){
+            prefix[i]=prefix[i-1]+prime[i];
+        }
+        return prefix[R]-prefix[L-1];
+    }
+};

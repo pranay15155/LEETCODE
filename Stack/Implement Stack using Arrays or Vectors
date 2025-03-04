@@ -1,0 +1,60 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void push(ll b, ll &pointer, vector<int> &arr) {
+    if (pointer + 1 == arr.size()) {  // Stack is full, resize it
+        vector<int> newArr(arr.size() * 2, -1);  // Double the size
+        for (int i = 0; i < arr.size(); i++) {
+            newArr[i] = arr[i];  // Copy elements
+        }
+        arr = newArr;  // Assign new array
+    }
+    pointer++;
+    arr[pointer] = b;
+}
+
+ll top(ll &pointer, vector<int> &arr) {
+    if (pointer == -1) return -1;  // Stack is empty
+    return arr[pointer];
+}
+
+ll pop(ll &pointer, vector<int> &arr) {
+    if (pointer == -1) return -1;  // Stack is empty
+    ll temp = arr[pointer];
+    pointer--;
+    return temp;
+}
+
+void pranay_prasoon() {
+    ll q;
+    cin >> q;
+    vector<int> arr(5, -1);  // Initial size of 5
+    ll pointer = -1;         // Stack is empty initially
+
+    for (int i = 0; i < q; ++i) {
+        ll a, b;
+        cin >> a;
+        if (a == 1) {  // Push operation
+            cin >> b;
+            push(b, pointer, arr);
+        } else if (a == 2) {  // Return top element
+            cout << top(pointer, arr) << endl;
+        } else {  // Pop operation
+            cout << pop(pointer, arr) << endl;
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll queries;
+    cin >> queries;
+    while (queries--) {
+        pranay_prasoon();
+    }
+    return 0;
+}

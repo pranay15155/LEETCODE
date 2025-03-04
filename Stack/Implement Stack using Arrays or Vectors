@@ -58,3 +58,70 @@ int main() {
     }
     return 0;
 }
+
+
+//OR WE CAN DO IT BY RESIZING THE CURRENT VECTOR ONLY
+
+//remember when size becomes full vector is doubling its size keeping previous elements intact
+//but vector has continuous memory allocation what happens if continuous memory is not available 
+//then a new place having 2*n size will be allocated and because vector is passed by reference ,vector
+//will get a new address
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long 
+
+void push(ll b, ll &pointer, vector<int> &arr) {
+    if (pointer + 1 == arr.size()) {  // Stack is full, resize it
+        arr.resize(arr.size() * 2, -1);  // Double the size, keeping old elements
+    }
+    pointer++;
+    arr[pointer] = b;
+}
+
+ll top(ll &pointer, vector<int> &arr) {
+    if (pointer == -1) return -1;  // Stack is empty
+    return arr[pointer];
+}
+
+ll pop(ll &pointer, vector<int> &arr) {
+    if (pointer == -1) return -1;  // Stack is empty
+    ll temp = arr[pointer];
+    pointer--;
+    return temp;
+}
+
+void pranay_prasoon() {
+    ll q;
+    cin >> q;
+    vector<int> arr(5, -1);  // Initial size of 5
+    ll pointer = -1;         // Stack is empty initially
+
+    for (int i = 0; i < q; ++i) {
+        ll a, b;
+        cin >> a;
+        if (a == 1) {  // Push operation
+            cin >> b;
+            push(b, pointer, arr);
+        } else if (a == 2) {  // Return top element
+            cout << top(pointer, arr) << endl;
+        } else {  // Pop operation
+            cout << pop(pointer, arr) << endl;
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll queries;
+    cin >> queries;
+    while (queries--) {
+        pranay_prasoon();
+    }
+    return 0;
+}

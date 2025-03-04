@@ -1,0 +1,35 @@
+https://leetcode.com/problems/min-stack/description/
+
+
+class MinStack {
+public:
+    stack<pair<int,int>>st;
+    MinStack() {
+        
+    }
+    void push(int val) {
+        if(st.size()==0)st.push({val,val});
+        else{
+            int temp=st.top().second;
+            st.push({val,min(temp,val)});
+        }
+    }
+    
+    void pop() {
+        if(st.size())st.pop();
+    }
+    
+    int top() {
+        if(st.size())return st.top().first;
+        return -1;
+    }
+    
+    int getMin() {
+        if(st.size())return st.top().second;
+        return -1;
+    }
+};
+
+//METHOD--2
+
+

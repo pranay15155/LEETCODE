@@ -32,4 +32,46 @@ public:
 
 //METHOD--2
 
+class MinStack {
+public:
+    stack<long> st;
+    long mini = 1e8;
+    MinStack() {}
+
+    void push(int val) {
+        if (st.size() == 0) {
+            st.push(val);
+            mini = val;
+            return;
+        }
+        if (val >= mini)
+            st.push(val);
+        else {
+            st.push(2ll * val - mini);
+            mini = val;
+        }
+    }
+
+    void pop() {
+        if (st.size() == 0)
+            return;
+        long temp = st.top();
+        st.pop();
+        if (temp < mini) {
+            mini = 2 * mini - temp;
+        }
+    }
+
+    int top() {
+        if (st.size() == 0)
+            return -1;
+        long temp = st.top();
+        if (temp > mini)
+            return temp;
+        return mini;
+    }
+
+    int getMin() { return mini; }
+};
+
 

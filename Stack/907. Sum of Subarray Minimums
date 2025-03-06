@@ -1,0 +1,65 @@
+https://leetcode.com/problems/sum-of-subarray-minimums/description/
+
+
+class Solution {
+public:
+    long long mod = 1e9 + 7;
+
+    int sumSubarrayMins(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> nsr(n, 0);    // nearest smaller to right
+        vector<int> nsl(n, 0);    // nearest smaller to left
+        stack<pair<int, int>> st; //{element,index}
+        long long ans = 0;
+
+        // calculation of nearest smaller to right
+        for (int i = n - 1; i >= 0; i--) {
+            if (st.size() == 0) {
+                nsr[i] = n;
+                st.push({arr[i], i});
+            } else {
+                while (st.size() && st.top().first >= arr[i]) {
+                    st.pop();
+                }
+                if (st.size() == 0)
+                    nsr[i] = n;
+                else
+                    nsr[i] = st.top().second;
+                st.push({arr[i], i});
+            }
+        }
+
+        // calculation of nearest smaller to left
+        st = stack<pair<int, int>>();
+        for (int i = 0; i < n; i++) {
+            if (st.size() == 0) {
+                nsl[i] = -1;
+                st.push({arr[i], i});
+            } else {
+                while (st.size() && st.top().first > arr[i]) {
+                    st.pop();
+                }
+                if (st.size() == 0)
+                    nsl[i] = -1;
+                else
+                    nsl[i] = st.top().second;
+                st.push({arr[i], i});
+            }
+        }
+        // d(nsr);
+        // d(nsl);
+        for (long long i = 0; i < n; i++) {
+            long long temp = ((i - nsl[i]) * (nsr[i] - i)) % mod;
+            // d(temp);
+            ans = (ans + (temp * arr[i]) % mod) % mod;
+        }
+        return ans;
+    }
+};
+
+// edge case
+
+//[71,55,82,55]
+// while calculating Nearest Smaller to Left i have not considered
+// equal elements in subarray because it is already considered in
+// Nearest Smaller to Right

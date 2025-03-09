@@ -1,6 +1,19 @@
 https://leetcode.com/problems/sum-of-subarray-ranges/description/
 
 
+
+//Very Very Important Problem to solve
+
+//yu can learn 
+//Nearest Smaller to Left
+//Nearest smaller to right
+//Nearest Greater to Left
+//Nearest Greater to Right
+//and
+//Sum of Subarray Minimums
+
+//all concepts  in this problem 
+
 class Solution {
 public:
 int mod=1e9+7;

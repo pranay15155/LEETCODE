@@ -1,0 +1,122 @@
+https://leetcode.com/problems/sum-of-subarray-ranges/description/
+
+
+class Solution {
+public:
+int mod=1e9+7;
+    long long subArrayRanges(vector<int>& nums) {
+        stack<int>st;
+        int n=nums.size();
+        vector<int>nsl(n,0);
+        for(int i=0;i<n;i++){
+            if(st.size()==0){
+                nsl[i]=-1;
+                st.push(i);
+            }
+            else{
+                while(st.size() && nums[st.top()]>nums[i]){
+                    st.pop();
+                }
+                if(st.size()==0){
+                    nsl[i]=-1;
+                }
+                else nsl[i]=st.top();
+                st.push(i);
+            }
+        }
+        st=stack<int>();
+        d(nsl);
+        vector<int>nsr(n,0);
+        for(int i=n-1;i>=0;i--){
+            if(st.size()==0){
+                nsr[i]=n;
+                st.push(i);
+            }
+            else{
+                while(st.size() && nums[st.top()]>=nums[i]){
+                    st.pop();
+                }
+                if(st.size()==0){
+                    nsr[i]=n;
+                }
+                else nsr[i]=st.top();
+                st.push(i);
+            }
+        }
+        d(nsr);
+        st=stack<int>();
+        vector<int>ngl(n,0);
+        for(int i=0;i<n;i++){
+            if(st.size()==0){
+                ngl[i]=-1;
+                st.push(i);
+            }
+            else{
+                while(st.size() && nums[st.top()]<nums[i]){
+                    st.pop();
+                }
+                if(st.size()==0){
+                    ngl[i]=-1;
+                }
+                else ngl[i]=st.top();
+                st.push(i);
+            }
+        }
+        d(ngl);
+        st=stack<int>();
+        vector<int>ngr(n,0);
+        for(int i=n-1;i>=0;i--){
+            if(st.size()==0){
+                ngr[i]=n;
+                st.push(i);
+            }
+            else{
+                while(st.size() && nums[st.top()]<=nums[i]){
+                    st.pop();
+                }
+                if(st.size()==0){
+                    ngr[i]=n;
+                }
+                else ngr[i]=st.top();
+                st.push(i);
+            }
+        }
+        d(ngr);
+        long long ans=0;
+        for(long i=0;i<n;i++){
+            long long mini=(i-nsl[i])*(nsr[i]-i);
+            long long maxi=(i-ngl[i])*(ngr[i]-i);
+            ans+=(maxi-mini)*1ll*nums[i];
+        }
+        return ans;
+    }
+};
+//2 3 5 7 4
+
+//-1 0 1 2 1 -->nearest smaller to left
+//5  5 4 4 5 -->nearest smaller to right
+//-1 -1 -1 -1 3-->nearest greater to left
+//1 2 3 5 5-->nearest greater to right 
+
+
+
+
+//2
+//2 3
+//2 3 5
+//2 3 5 7
+//2 3 5 7 4
+
+//3 
+//3 5
+//3 5 7
+//3 5 7 4
+
+//5
+//5 7
+//5 7 4
+
+//7
+//7 4
+
+//4

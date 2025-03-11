@@ -82,3 +82,34 @@ public:
     }
 };
 //bbacba
+
+
+//My simple sliding window approach 
+
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int a = 0, b = 0, c = 0;
+        int ans = 0;
+        int n = s.size();
+        int low = 0, high = 0;
+        while (high < n) {
+            if (s[high] == 'a')
+                a++;
+            else if (s[high] == 'b')
+                b++;
+            else if (s[high] == 'c')
+                c++;
+
+            while (a > 0 && b > 0 && c > 0 && low < high) {
+                ans += n - 1 - high + 1;
+                if (s[low] == 'a')a--;
+                else if (s[low] == 'b')b--;
+                else if (s[low] == 'c')c--;
+                low++;
+            }
+            high++;
+        }
+        return ans;
+    }
+};

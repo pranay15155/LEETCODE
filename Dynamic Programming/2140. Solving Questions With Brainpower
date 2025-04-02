@@ -1,0 +1,21 @@
+https://leetcode.com/problems/solving-questions-with-brainpower/description/?envType=daily-question&envId=2025-04-01
+
+
+//simple take not-take dp question
+
+class Solution {
+public:
+    long long f(int ind,vector<long long>&dp,vector<vector<int>>& questions){
+        if(ind>=questions.size())return 0;
+        if(dp[ind]!=-1)return dp[ind];
+        long long ans=0;
+        ans=questions[ind][0]+f(ind+questions[ind][1]+1,dp,questions);
+        ans=max(ans,f(ind+1,dp,questions));
+        return dp[ind]=ans;
+    }
+    long long mostPoints(vector<vector<int>>& questions) {
+        int n=questions.size();
+        vector<long long>dp(n,-1);
+        return f(0,dp,questions);
+    }
+};

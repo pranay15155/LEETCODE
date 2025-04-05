@@ -1,5 +1,7 @@
 https://leetcode.com/problems/sum-of-all-subset-xor-totals/description/?envType=daily-question&envId=2025-04-05
 
+
+//USING POWER SET
 class Solution {
 public:
     int subsetXORSum(vector<int>& nums) {
@@ -21,3 +23,26 @@ public:
 //approach is simple basically generate all subarray using power set method and take xor
 //what i have done is instead of storing subarrays 
 //what i did was while making subarray only i took xor of all elements in that subarray 
+
+
+
+
+
+
+//USING SIMPLE RECURSION 
+
+class Solution {
+public:
+    int f(int ind,vector<int>& nums,int temp){
+        if(ind>=nums.size())return temp;
+        
+        int take=f(ind+1,nums,temp^nums[ind]);
+        int not_take=f(ind+1,nums,temp);
+
+        return take+not_take;
+    }
+    int subsetXORSum(vector<int>& nums) {
+        int temp=0;
+        return f(0,nums,temp);
+    }
+};

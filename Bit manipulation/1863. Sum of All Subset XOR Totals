@@ -1,0 +1,23 @@
+https://leetcode.com/problems/sum-of-all-subset-xor-totals/description/?envType=daily-question&envId=2025-04-05
+
+class Solution {
+public:
+    int subsetXORSum(vector<int>& nums) {
+        int n=nums.size();
+        int limit=(1<<n)-1;
+        int ans=0;
+        for(int i=0;i<=limit;i++){//if n=3 -->it goes from 0 to 7 i.e pow(2,3)-1 
+            int temp=0;
+            for(int j=0;j<n;j++){ // this loop is for which index element to consider in subarray 
+                int t=1<<j;
+                if(i&t)temp^=nums[j]; //taking xor of all elements in that subarray
+            }
+            ans+=temp;//adding xor of that subarray into final sum
+        }
+        return ans;
+    }
+};
+
+//approach is simple basically generate all subarray using power set method and take xor
+//what i have done is instead of storing subarrays 
+//what i did was while making subarray only i took xor of all elements in that subarray 

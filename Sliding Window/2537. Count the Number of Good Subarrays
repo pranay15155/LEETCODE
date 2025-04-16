@@ -1,0 +1,24 @@
+class Solution {
+public:
+    long long countGood(vector<int>& nums, int k) {
+       long long ans=0;
+       long long count=0;
+       unordered_map<int,int>mp;
+       int low=0,high=0;
+       int n=nums.size();
+       while(high<n){
+        count+=mp[nums[high]];
+        mp[nums[high]]++;
+
+        while(count>=k){
+            ans+=n-high;
+            mp[nums[low]]--;
+            count-=mp[nums[low]];
+            if(mp[nums[low]]==0)mp.erase(nums[low]);
+            low++;
+        }
+        high++;
+       }
+       return ans; 
+    }
+};

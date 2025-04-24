@@ -1,0 +1,26 @@
+https://leetcode.com/problems/count-complete-subarrays-in-an-array/description/?envType=daily-question&envId=2025-04-24
+
+
+class Solution {
+public:
+    int countCompleteSubarrays(vector<int>& nums) {
+        set<int>st;
+        for(auto&x:nums)st.insert(x);
+        int target=st.size();
+        int n=nums.size();
+        int low=0,high=0;
+        map<int,int>mp;
+        int ans=0;
+        while(high<n){
+         mp[nums[high]]++;
+         while(mp.size()==target && low<=high){
+            if(mp.size()==target)ans+=n-high;
+            mp[nums[low]]--;
+            if(mp[nums[low]]==0)mp.erase(nums[low]);
+            low++;
+         }  
+         high++;
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,67 @@
+https://leetcode.com/problems/maximize-the-number-of-target-nodes-after-connecting-trees-i/description/
+
+
+
+class Solution {
+public:
+    void f(vector<int>& ans, int k, int node, int n, vector<vector<int>>& adj) {
+        queue<int> q;
+        vector<int> vis(n, 0);
+        vis[node] = 1;
+        q.push(node);
+        int level = 1;
+        int total = 0;
+        while (q.size()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int new_node = q.front();
+                q.pop();
+                for (auto& x : adj[new_node]) {
+                    if (vis[x] == 0 && level <= k) {
+                        total++;
+                        q.push(x);
+                        vis[x] = 1;
+                    }
+                }
+            }
+            level++;
+        }
+        ans[node] = total + 1;
+    }
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1,
+                               vector<vector<int>>& edges2, int k) {
+        int n = edges1.size() + 1;
+        vector<int> ans(n, 0);
+        vector<vector<int>> adj(n);
+        for (int i = 0; i < edges1.size(); i++) {
+            int u = edges1[i][0];
+            int v = edges1[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        d(adj);
+        for (int i = 0; i < n; i++) {
+            f(ans, k, i, n, adj);
+        }
+        d(ans);
+        int m = edges2.size() + 1;
+        vector<vector<int>> adj2(m);
+        for (int i = 0; i < edges2.size(); i++) {
+            int u = edges2[i][0];
+            int v = edges2[i][1];
+            adj2[u].push_back(v);
+            adj2[v].push_back(u);
+        }
+        vector<int>ans2(m,0);
+        for (int i = 0; i < m; i++) {
+            f(ans2, k-1, i, m, adj2);
+        }
+        int maxi=0;
+        for(auto &x:ans2)maxi=max(maxi,x);
+        if(k==0)return ans;
+        for(auto &x:ans){
+            x+=maxi;
+        }
+        return ans;
+    }
+};

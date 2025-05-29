@@ -1,6 +1,7 @@
 https://leetcode.com/problems/maximize-the-number-of-target-nodes-after-connecting-trees-i/description/
 
-
+In this question we just have to find maximum number of nodes at a distance k 
+which we can easily find using BFS 
 
 class Solution {
 public:

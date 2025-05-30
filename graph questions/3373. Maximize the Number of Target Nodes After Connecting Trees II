@@ -1,0 +1,67 @@
+https://leetcode.com/problems/maximize-the-number-of-target-nodes-after-connecting-trees-ii/description/
+
+in this question we just have to mark alternate as zero and one and then try to connect two trees 
+and find out what even no of nodes from starting point 
+
+class Solution {
+public:
+    vector<int> bfs(vector<vector<int>>&adj,int node,int n){
+      vector<int>ans(n,-1),vis(n,0);
+      queue<int>q;
+      q.push(node);
+      vis[node]=1;
+      int level=0;
+      while(q.size()){
+        int size=q.size();
+        for(int i=0;i<size;i++){
+            int new_node=q.front();
+            q.pop();
+            ans[new_node]=level%2;
+            for(auto &x:adj[new_node]){
+                if(vis[x]==0){
+                    q.push(x);
+                    vis[x]=1;
+                }
+            }
+        }
+        level++;
+      }
+      return ans;
+    }
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
+        int n=edges1.size()+1;
+        int m=edges2.size()+1;
+        vector<vector<int>>adj(n);
+        for(int i=0;i<edges1.size();i++){
+            int u=edges1[i][0];
+            int v=edges1[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        vector<vector<int>>adj1(m);
+        for(int i=0;i<edges2.size();i++){
+            int u=edges2[i][0];
+            int v=edges2[i][1];
+            adj1[u].push_back(v);
+            adj1[v].push_back(u);
+        }
+        vector<int>ans1=bfs(adj,0,n);
+        vector<int>ans2=bfs(adj1,0,m);
+        int first_zero=0,first_one=0,second_zero=0,second_one=0;
+        for(auto &x:ans1){
+            if(x==0)first_zero++;
+            else first_one++;
+        }
+        for(auto &x:ans2){
+            if(x==0)second_zero++;
+            else second_one++;
+        }
+        vector<int>result(n,0);
+        int maxi=max(second_zero,second_one);
+        for(int i=0;i<n;i++){
+            if(ans1[i]==0)result[i]=first_zero+maxi;
+            else result[i]=first_one+maxi;
+        }
+        return result;
+    }
+};

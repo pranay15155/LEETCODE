@@ -1,0 +1,29 @@
+https://leetcode.com/problems/minimum-deletions-to-make-string-k-special/description/?envType=daily-question&envId=2025-06-21
+
+
+class Solution {
+public:
+    int minimumDeletions(string word, int k) {
+        vector<int> freq;
+        unordered_map<char, int> mp;
+        for (auto& x : word)
+            mp[x]++;
+        for (auto& [x, y] : mp) {
+            freq.push_back(y);
+        }
+        sort(freq.begin(), freq.end());
+        int ans = 1e8, sum = 0;
+        for (int i = 0; i < freq.size(); i++) {
+            int temp = 0;
+            for (int j = i + 1; j < freq.size(); j++) {
+                if (freq[j] - freq[i] > k) {
+                    temp += freq[j] - freq[i] - k;
+                }
+            }
+            temp += sum;
+            sum += freq[i];
+            ans = min(ans, temp);
+        }
+        return ans;
+    }
+};

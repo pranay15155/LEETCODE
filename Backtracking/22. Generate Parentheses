@@ -1,0 +1,46 @@
+https://leetcode.com/problems/generate-parentheses/description/?envType=problem-list-v2&envId=dynamic-programming
+
+class Solution {
+public:
+    bool check(string &s){
+        stack<char>st;
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='('){
+                st.push('(');
+            }
+            else {
+                if(st.size() && st.top()=='(')st.pop();
+                else return 0;
+            }
+        }
+        if(st.size()==0)return 1;
+        return 0;
+    }
+    void f(int ind,int n,string &s,vector<string>&v){
+        if(ind==2*n){
+            if(check(s))v.push_back(s);
+            return ;
+        }
+        s+='(';
+        f(ind+1,n,s,v);
+        s.pop_back();
+        s+=')';
+        f(ind+1,n,s,v);
+        s.pop_back();
+    }
+    vector<string> generateParenthesis(int n) {
+        vector<string>ans;
+        string temp="";
+        int ind=0;
+        f(ind,n,temp,ans);
+        return ans;
+    }
+};
+
+//the logic is pretty simple for this case there are literally two 
+// possibility at every step either choose opening bracket or choose
+//closing bracket and when string becomes of size=2*n 
+//then we check if string does have balanced parenthesis if it does then 
+//we can add that string in our vector of strings if not then skip it 
+
+

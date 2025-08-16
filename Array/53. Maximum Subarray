@@ -1,0 +1,19 @@
+https://leetcode.com/problems/maximum-subarray/description/?envType=problem-list-v2&envId=dynamic-programming
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int ans=-1e9;
+        int sum=0;
+        for(int i=0;i<nums.size();i++){
+            sum+=nums[i];
+            ans=max(ans,sum);
+            if(sum<0)sum=0;
+        }
+        return ans;
+    }
+};
+
+//Kadane's Algo
+
+// https://www.youtube.com/watch?v=AHZpyENo7k4

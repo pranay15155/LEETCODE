@@ -1,0 +1,53 @@
+https://leetcode.com/problems/maximum-subarray/description/?envType=problem-list-v2&envId=dynamic-programming
+
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n);
+        dp[0] = nums[0];
+        int ans = dp[0];
+        for (int i = 1; i < n; i++) {
+            dp[i] = max(nums[i], dp[i-1] + nums[i]);
+            ans = max(ans, dp[i]);
+        }
+        // d(dp);
+        return ans;
+    }
+};
+
+// Define dp[i] = maximum subarray sum ending at index i.
+
+// Transition:
+// dp[i] = max(nums[i], dp[i-1] + nums[i])
+
+// Answer = maximum of all dp[i].
+
+// Explanation:
+// - At every index i, we have two choices:
+//   1. Start a new subarray from nums[i].
+//   2. Extend the previous subarray by adding nums[i] to dp[i-1].
+// - dp[i] stores the best subarray sum ending at index i.
+// - The final answer is the maximum value among all dp[i].
+
+
+METHOD-2
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int ans=-1e9;
+        int sum=0;
+        for(int i=0;i<nums.size();i++){
+            sum+=nums[i];
+            ans=max(ans,sum);
+            if(sum<0)sum=0;
+        }
+        return ans;
+    }
+};
+
+//Kadane's Algo
+
+// https://www.youtube.com/watch?v=AHZpyENo7k4

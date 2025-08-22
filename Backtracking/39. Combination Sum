@@ -1,0 +1,29 @@
+https://leetcode.com/problems/combination-sum/description/?envType=problem-list-v2&envId=backtracking
+
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        int sum = 0;
+        int n = candidates.size();
+        vector<int> temp;
+        auto f = [&](auto&& self, int ind, vector<int>& temp, int sum) -> void {
+            if (sum == target) {
+                ans.push_back(temp);
+                return;
+            }
+            if (ind >= n || sum > target)
+                return;
+
+            sum += candidates[ind];
+            temp.push_back(candidates[ind]);
+            self(self, ind, temp, sum);
+            sum -= candidates[ind];
+            temp.pop_back();
+            self(self, ind + 1, temp, sum);
+        };
+        f(f, 0, temp, sum);
+        return ans;
+    }
+};

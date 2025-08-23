@@ -35,3 +35,10 @@ public:
         return ans;
     }
 };
+
+//Watch striver explanation video if yu donot get the solution 
+//basically i have used map to prevent the same element two times in that recursion call
+//yu can pick same element again in next recusrion call but not in that one
+//watch striver video and his dry run it will get clear or else do a dry run 
+
+https://www.youtube.com/watch?v=G1fRTGRxXU8&list=PLgUwDviBIf0rGlzIn_7rsaR2FQ5e6ZOL9&index=11

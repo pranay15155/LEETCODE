@@ -27,3 +27,25 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        int n = nums.size();
+        auto f = [&](auto&& self, int ind, vector<int>& nums) -> void {
+            if (ind==n) {
+                ans.push_back(nums);
+                return;
+            }
+            for (int i = ind; i < n; i++) {
+                swap(nums[ind],nums[i]);
+                self(self,ind+1,nums);
+                swap(nums[ind],nums[i]);
+            }
+        };
+        f(f, 0, nums);
+        return ans;
+    }
+};

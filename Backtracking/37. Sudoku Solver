@@ -1,0 +1,47 @@
+https://leetcode.com/problems/sudoku-solver/description/?envType=problem-list-v2&envId=backtracking
+
+class Solution {
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+
+        auto check = [&](int row, int col, char& temp) -> int {
+            for (int i = 0; i < 9; i++) {
+                if (board[row][i] == temp && i != col)return 0;
+                if (board[i][col] == temp && i != row)return 0;
+            }
+            int srow = row / 3;
+            srow *= 3;
+
+            int scol = col / 3;
+            scol *= 3;
+
+            for (int i = srow; i < srow + 3; i++) {
+                for (int j = scol; j < scol + 3; j++) {
+                    if (!(i == row && j == col) && board[i][j] == temp)
+                        return 0;
+                }
+            }
+            return 1;
+        };
+        auto solve = [&](auto&& self) -> int {
+            for (int row = 0; row < 9; row++) {
+                for (int col = 0; col < 9; col++) {
+                    if (board[row][col] == '.') {
+                        for (char i = '1'; i <= '9'; i++) {
+                            if (check(row, col, i) == 1) {
+                                board[row][col] = i;
+                                if (self(self) == 1)
+                                    return 1;
+                                board[row][col] = '.';
+                            }
+                        }
+                        return 0;
+                    }
+                }
+            }
+            return 1;
+        };
+        solve(solve);
+    }
+};
+

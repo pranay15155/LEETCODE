@@ -1,0 +1,79 @@
+https://leetcode.com/problems/n-queens/description/?envType=problem-list-v2&envId=backtracking
+
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        string s(n, '.');
+        vector<vector<string>> ans;
+        vector<string> chess;
+        for (int i = 0; i < n; i++) {
+            chess.push_back(s);
+        }
+        auto check = [&](vector<string>& chess, int row, int col) -> int {
+            // checking upper diagonal towards left
+            int r = row - 1;
+            int c = col - 1;
+            while (r >= 0 && c >= 0) {
+                if (chess[r][c] == 'Q')
+                    return 0;
+                else {
+                    r--;
+                    c--;
+                }
+            }
+            // checking lower diagonal towards left
+            r = row + 1;
+            c = col - 1;
+            while (r < n && c >= 0) {
+                if (chess[r][c] == 'Q')
+                    return 0;
+                else {
+                    r++;
+                    c--;
+                }
+            }
+            // checking towards left
+            r = row;
+            c = col - 1;
+            while (c >= 0) {
+                if (chess[r][c] == 'Q')
+                    return 0;
+                else
+                    c--;
+            }
+            return 1;
+        };
+        auto f = [&](auto&& self, int col, vector<string>& chess) -> void {
+            if (col == n) {
+                ans.push_back(chess);
+                return;
+            }
+            for (int row = 0; row < n; row++) {
+                if (check(chess, row, col) == 1) {
+                    chess[row][col] = 'Q';
+                    self(self, col + 1, chess);
+                    chess[row][col] = '.';
+                }
+            }
+        };
+
+        f(f, 0, chess);
+        return ans;
+        ;
+    }
+};
+
+//in check function 
+// i am not checking all 8 directions where queen can attack i am checking only 3
+//because
+
+//there is no queen in right side because we are yet to place a queen in next col
+//hence 3 directions of right are removed
+
+//in the col on which we are checking 
+//there is only 1 queen which we will place so two directions 
+// up and down will be useless to check because in every column we can place only 1
+//queen according to rule
+
+//so i am checking only 3 directions
+//watch striver video if getting confused in direction 

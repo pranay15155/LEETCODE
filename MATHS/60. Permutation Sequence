@@ -1,0 +1,26 @@
+https://leetcode.com/problems/permutation-sequence/description/
+
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        vector<int> nums;
+        int fact = 1;
+        for(int i = 1; i <= n; i++) {
+            nums.push_back(i);
+            fact *= i;  // n!
+        }
+
+        k--;  // convert to 0-based index
+        string ans = "";
+
+        for(int i = n; i >= 1; i--) {
+            fact /= i;               // (n-1)!, (n-2)! ...
+            int index = k / fact;    // which number to pick
+            ans += to_string(nums[index]);
+            nums.erase(nums.begin() + index);
+            k %= fact;               // remaining k
+        }
+
+        return ans;
+    }
+};

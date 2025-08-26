@@ -1,0 +1,57 @@
+https://www.geeksforgeeks.org/problems/rat-in-a-maze-problem/1
+
+
+class Solution {
+public:
+    vector<string> ratInMaze(vector<vector<int>>& maze) {
+        vector<string> ans;
+        int n = maze.size();
+        if(maze[0][0] == 0 || maze[n-1][n-1] == 0) return {}; // start or end blocked
+        
+        vector<vector<int>> visited(n, vector<int>(n,0));
+        string path = "";
+        
+        auto check = [&](int r,int c) {
+            return r >= 0 && r < n && c >= 0 && c < n && maze[r][c] == 1;
+        };
+        
+        auto dfs = [&](auto &&self, int r, int c, string &path) -> void {
+            if(r == n-1 && c == n-1){
+                ans.push_back(path);
+                return;
+            }
+            
+            visited[r][c] = 1;
+            
+            // Explore in lexicographical order: D, L, R, U
+            if(check(r+1,c) && !visited[r+1][c]){
+                path += 'D';
+                self(self, r+1, c, path);
+                path.pop_back();
+            }
+            if(check(r,c-1) && !visited[r][c-1]){
+                path += 'L';
+                self(self, r, c-1, path);
+                path.pop_back();
+            }
+            if(check(r,c+1) && !visited[r][c+1]){
+                path += 'R';
+                self(self, r, c+1, path);
+                path.pop_back();
+            }
+            if(check(r-1,c) && !visited[r-1][c]){
+                path += 'U';
+                self(self, r-1, c, path);
+                path.pop_back();
+            }
+            
+            visited[r][c] = 0;
+        };
+        
+        dfs(dfs, 0, 0, path);
+        sort(ans.begin(), ans.end()); // lexicographical order
+        return ans;
+    }
+};
+
+

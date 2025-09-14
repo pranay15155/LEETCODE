@@ -42,3 +42,25 @@ public:
         return ans;
     }
 };
+
+
+//LATEST
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        map<char,int>mp;
+        int low=0,high=0,n=s.size();
+        int ans=0;
+        while(low<=high && high<n){
+            mp[s[high]]++;
+            while(mp[s[high]]>1){
+                mp[s[low]]--;
+                low++;
+            }
+            if(high-low+1>ans)ans=high-low+1;
+            high++;
+        }
+        return ans;
+    }
+};
